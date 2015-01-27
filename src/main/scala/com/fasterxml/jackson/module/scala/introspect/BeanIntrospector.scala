@@ -66,7 +66,7 @@ object BeanIntrospector {
     def findConstructorParam(c: Class[_], name: String): Option[ConstructorParameter] = {
       //c can be null if we're asked for the superclass of Object or AnyRef
       if (c == null || c == classOf[AnyRef]) return None
-      val primaryConstructor = c.getConstructors.headOption
+      val primaryConstructor = c.getConstructors.sortBy(_.getParameterTypes.length).headOption
       val debugCtorParamNames = primaryConstructor.toIndexedSeq.flatMap(getCtorParams)
       val index = debugCtorParamNames.indexOf(name)
       if (index >= 0) {
